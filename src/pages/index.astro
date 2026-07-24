@@ -18,7 +18,13 @@ const heroImage = "/images/einsteigen-cover.png";
     />
 
     <title>Juho Lee</title>
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon.png"
+    />
   </head>
 
   <body>
@@ -27,6 +33,7 @@ const heroImage = "/images/einsteigen-cover.png";
         class="hero-image"
         src={heroImage}
         alt=""
+        draggable="false"
       />
 
       <header class="menu">
@@ -35,7 +42,7 @@ const heroImage = "/images/einsteigen-cover.png";
         <nav>
           <a href="/work">Work</a>
           <a href="/cv">CV</a>
-        <a href="/contact">Contact</a>
+          <a href="/contact">Contact</a>
         </nav>
       </header>
 
@@ -44,6 +51,40 @@ const heroImage = "/images/einsteigen-cover.png";
         <a href="/privacy">Privacy Policy</a>
       </div>
     </main>
+
+    <script>
+      const hero = document.querySelector(".hero-image");
+
+      if (hero instanceof HTMLImageElement) {
+        // 처음에는 이미지의 가장 위쪽을 보여준다.
+        let current = 0;
+        let target = 0;
+
+        window.addEventListener(
+          "wheel",
+          (event) => {
+            event.preventDefault();
+
+            // 휠을 아래로 내리면 이미지의 아래쪽으로 이동한다.
+            target += event.deltaY * 0.03;
+
+            // 이미지의 맨 위부터 맨 아래까지만 이동한다.
+            target = Math.max(0, Math.min(100, target));
+          },
+          { passive: false }
+        );
+
+        const animate = () => {
+          current += (target - current) * 0.08;
+
+          hero.style.objectPosition = `center ${current}%`;
+
+          requestAnimationFrame(animate);
+        };
+
+        animate();
+      }
+    </script>
   </body>
 </html>
 
@@ -61,6 +102,7 @@ const heroImage = "/images/einsteigen-cover.png";
 
   :global(body) {
     overflow: hidden;
+    overscroll-behavior: none;
     background: #fff;
     color: #111;
     font-family: Arial, Helvetica, sans-serif;
@@ -92,7 +134,12 @@ const heroImage = "/images/einsteigen-cover.png";
     height: 100%;
 
     object-fit: cover;
-    object-position: center;
+
+    /* 홈페이지에 처음 들어왔을 때 이미지의 위쪽부터 표시 */
+    object-position: center 0%;
+
+    user-select: none;
+    pointer-events: none;
   }
 
   .menu {
@@ -158,10 +205,6 @@ const heroImage = "/images/einsteigen-cover.png";
   }
 
   @media (max-width: 760px) {
-    .hero-image {
-      object-position: center;
-    }
-
     .menu {
       top: 20px;
       left: 18px;
