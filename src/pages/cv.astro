@@ -52,7 +52,7 @@ const works = [
   },
 ];
 
-const film = [
+const performance = [
   {
     year: "2026",
     title: "Why Hasn't Everything Disappeared Yet",
@@ -63,14 +63,6 @@ const film = [
     title: "Come As You Are",
     text: "Actor and model",
   },
-];
-
-const fashion = [
-  {
-    year: "2023—",
-    title: "Tomorrow is another day",
-    text: "Düsseldorf",
-  },
   {
     year: "2024",
     title: "Balenciaga Winter 2025",
@@ -80,6 +72,11 @@ const fashion = [
     year: "2024—2025",
     title: "Balenciaga",
     text: "Showroom and internal productions",
+  },
+  {
+    year: "2023—",
+    title: "Tomorrow is another day",
+    text: "Model, Düsseldorf",
   },
 ];
 ---
@@ -153,26 +150,7 @@ const fashion = [
 
         <div class="list">
           {
-            film.map((item) => (
-              <div class="entry">
-                <span class="year">{item.year}</span>
-
-                <div>
-                  <p class="entry-title">{item.title}</p>
-                  <p class="secondary">{item.text}</p>
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </section>
-
-      <section>
-        <h1>Fashion</h1>
-
-        <div class="list">
-          {
-            fashion.map((item) => (
+            performance.map((item) => (
               <div class="entry">
                 <span class="year">{item.year}</span>
 
