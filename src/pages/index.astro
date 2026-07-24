@@ -77,7 +77,8 @@ const heroImage = "/images/einsteigen-cover.png";
         const animate = () => {
           current += (target - current) * 0.08;
 
-          hero.style.objectPosition = `center ${current}%`;
+         const xPosition = window.innerWidth <= 760 ? "45%" : "center";
+hero.style.objectPosition = `${xPosition} ${current}%`;
 
           requestAnimationFrame(animate);
         };
