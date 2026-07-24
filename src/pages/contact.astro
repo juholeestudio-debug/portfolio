@@ -1,8 +1,15 @@
+---
+---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
 
     <meta
       name="description"
@@ -10,46 +17,54 @@
     />
 
     <title>Contact — Juho Lee</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon.png"
+    />
   </head>
 
   <body>
-    <header>
-      <a href="/" class="name">Juho Lee</a>
+    <main class="contact-page">
+      <header class="menu">
+        <a class="name" href="/">Juho Lee</a>
 
-      <nav>
-        <a href="/work">Work</a>
-        <a href="/cv">CV</a>
-        <a href="/contact">Contact</a>
-      </nav>
-    </header>
+        <nav>
+          <a href="/work">Work</a>
+          <a href="/cv">CV</a>
+          <a href="/contact">Contact</a>
+        </nav>
+      </header>
 
-    <main>
-      <section>
-        <h1>Contact</h1>
+      <section class="contact-content">
+        <div class="contact-item">
+          <div class="label">Email</div>
 
-        <div class="contact-info">
-          <a
-            class="email"
-            href="mailto:juholee.studio@gmail.com"
-          >
+          <a href="mailto:juholee.studio@gmail.com">
             juholee.studio@gmail.com
           </a>
+        </div>
 
-          <p>Cologne, Germany</p>
+        <div class="contact-item">
+          <div class="label">Instagram</div>
+
+          <a
+            href="https://www.instagram.com/juho_2d/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @juho_2d
+          </a>
         </div>
       </section>
 
-      <footer>
+      <div class="legal-links">
         <a href="/impressum">Impressum</a>
-      </footer>
-    </main>
-        <footer class="footer">
-      <span>© 2026 Juho Lee</span>
-
-      <div class="footer-links">
-        <a href="/impressum">Impressum</a>
+        <a href="/privacy">Privacy Policy</a>
       </div>
-    </footer>
+    </main>
   </body>
 </html>
 
@@ -58,11 +73,19 @@
     box-sizing: border-box;
   }
 
+  :global(html),
   :global(body) {
+    width: 100%;
+    min-height: 100%;
     margin: 0;
+  }
+
+  :global(body) {
     background: #fff;
     color: #111;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.35;
   }
 
   a {
@@ -70,20 +93,24 @@
     text-decoration: none;
   }
 
-  header,
-  main {
-    width: min(1320px, calc(100% - 64px));
-    margin: 0 auto;
+  .contact-page {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #fff;
   }
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 26px 0;
+  .menu {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 100;
   }
 
   .name {
+    display: block;
+    margin-bottom: 20px;
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -91,81 +118,121 @@
 
   nav {
     display: flex;
-    gap: 26px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   nav a {
     font-size: 16px;
     font-weight: 400;
+    line-height: 1.25;
   }
 
-  nav a:hover,
-  .email:hover,
-  footer a:hover {
+  nav a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
-  main {
-    min-height: calc(100vh - 77px);
+  .contact-content {
+    padding-top: 190px;
+    padding-right: 32px;
+    padding-bottom: 120px;
+    padding-left: 32px;
+  }
+
+  .contact-item {
+    margin-bottom: 34px;
+  }
+
+  .label {
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .contact-content a {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .contact-content a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .legal-links {
+    position: fixed;
+    right: 32px;
+    bottom: 28px;
+    z-index: 100;
+
     display: flex;
-    flex-direction: column;
-    padding-top: 56px;
-    padding-bottom: 32px;
+    align-items: center;
+    gap: 20px;
+
+    padding: 5px 7px;
+
+    background: #fff;
+    color: #111;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
   }
 
-  section {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 34px;
+  .legal-links a {
+    display: block;
   }
 
-  h1 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 700;
+  .legal-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
-  .contact-info {
-    font-size: 15px;
-    line-height: 1.45;
-  }
+  @media (max-width: 760px) {
+    .menu {
+      top: 20px;
+      left: 18px;
+    }
 
-  .contact-info p {
-    margin: 5px 0 0;
-    opacity: 0.55;
-  }
-
-  footer {
-    margin-top: auto;
-    padding-top: 80px;
-  }
-
-  footer a {
-    font-size: 11px;
-  }
-
-  @media (max-width: 650px) {
-    header,
-    main {
-      width: calc(100% - 32px);
+    .name {
+      margin-bottom: 10px;
+      font-size: 20px;
     }
 
     nav {
-      gap: 14px;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 15px;
     }
 
     nav a {
       font-size: 14px;
     }
 
-    main {
-      padding-top: 36px;
+    .contact-content {
+      padding-top: 130px;
+      padding-right: 18px;
+      padding-bottom: 100px;
+      padding-left: 18px;
     }
 
-    section {
-      grid-template-columns: 1fr;
-      gap: 24px;
+    .contact-item {
+      margin-bottom: 28px;
+    }
+
+    .contact-content a {
+      font-size: 14px;
+    }
+
+    .legal-links {
+      right: 18px;
+      bottom: 18px;
+      gap: 14px;
+      padding: 5px 7px;
+      font-size: 11px;
     }
   }
 </style>
