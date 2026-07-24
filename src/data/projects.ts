@@ -18,7 +18,17 @@ export const projects: Project[] = [
   description:
     "Opposable Thumb, a projection mapping installation by Juho Lee.",
 },
-    {
+{
+  slug: "arena-waves",
+  title: "Arena Waves",
+  year: "2023",
+  medium: "Projection Mapping",
+  vimeo:
+    "https://player.vimeo.com/video/1037197158?badge=0&autopause=0&player_id=0&app_id=58479",
+  description:
+    "Arena Waves, a projection mapping installation by Juho Lee.",
+},    
+{
     slug: "random-box",
     title: "Random Box",
     year: "2023",
