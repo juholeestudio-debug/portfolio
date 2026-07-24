@@ -1,0 +1,203 @@
+---
+const desktopHero = "/images/einsteigen-cover.png";
+const mobileHero = "/images/einsteigen-cover-mobile.png";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <meta
+      name="description"
+      content="Juho Lee — Animation and Media Artist"
+    />
+
+    <title>Juho Lee</title>
+  </head>
+
+  <body>
+    <main class="home">
+      <picture class="hero-picture">
+        <source
+          media="(max-width: 760px)"
+          srcset={mobileHero}
+        />
+
+        <img
+          class="hero-image"
+          src={desktopHero}
+          alt="Artwork by Juho Lee"
+        />
+      </picture>
+
+      <header class="menu">
+        <a class="name" href="/">Juho Lee</a>
+
+        <nav>
+          <a href="/work">Work</a>
+          <a href="/cv">CV</a>
+          <a href="mailto:juholee.rock@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <div class="legal-links">
+        <a href="/impressum">Impressum</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html),
+  :global(body) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  :global(body) {
+    overflow: hidden;
+    background: #fff;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .home {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .hero-picture {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .menu {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 100;
+  }
+
+  .name {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  nav a {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .legal-links {
+    position: fixed;
+    right: 32px;
+    bottom: 28px;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 5px 7px;
+
+    background: #fff;
+    color: #111;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .legal-links a {
+    display: block;
+    color: #111;
+    text-decoration: none;
+  }
+
+  .legal-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 760px) {
+    .hero-image {
+      object-position: center;
+    }
+
+    .menu {
+      top: 20px;
+      left: 18px;
+    }
+
+    .name {
+      margin-bottom: 10px;
+    }
+
+    nav {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    nav a {
+      font-size: 14px;
+    }
+
+    .legal-links {
+      right: 18px;
+      bottom: 18px;
+      gap: 14px;
+      padding: 5px 7px;
+      font-size: 11px;
+    }
+  }
+</style>

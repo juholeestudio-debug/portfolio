@@ -1,0 +1,269 @@
+---
+import Footer from "../components/Footer.astro";
+
+const projects = [
+  {
+    title: "curious",
+    type: "Drawing",
+    year: "2026",
+    image: "/images/curious-cover.png",
+    href: "/work/curious",
+  },
+  {
+    title: "CAT II",
+    type: "Animation / Installation",
+    year: "2026",
+    image: "/images/catII-cover.jpg",
+    href: "/work/cat-ii",
+  },
+  {
+    title: "Opposable Thumb",
+    type: "Video Mapping",
+    year: "2025",
+    image: "/images/oberbaumbruecke-cover.jpg",
+    href: "/work/opposable-thumb",
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <meta
+      name="description"
+      content="Selected work by Juho Lee"
+    />
+
+    <title>Work — Juho Lee</title>
+  </head>
+
+  <body>
+    <header class="menu">
+      <a class="name" href="/">Juho Lee</a>
+
+      <nav>
+        <a href="/work">Work</a>
+        <a href="/cv">CV</a>
+        <a href="mailto:juholee.rock@gmail.com">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Selected Work</h1>
+
+      <section class="project-grid">
+        {
+          projects.map((project) => (
+            <a class="project-card" href={project.href}>
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+              />
+
+              <div class="overlay"></div>
+
+              <div class="project-info">
+                <span class="type">{project.type}</span>
+                <h2>{project.title}</h2>
+                <span class="year">{project.year}</span>
+              </div>
+            </a>
+          ))
+        }
+      </section>
+    </main>
+
+    <div class="footer-container">
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: #fff;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+  line-height: 1.35;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .menu {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 10;
+  }
+
+  .name {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  nav a {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  main {
+    width: min(1120px, calc(100% - 270px));
+    margin-left: 230px;
+    padding: 47px 0 80px;
+  }
+
+  h1 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .project-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #ddd;
+  }
+
+  .project-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms ease;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.72),
+      rgba(0, 0, 0, 0.08) 65%,
+      transparent
+    );
+  }
+
+  .project-info {
+    position: absolute;
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    color: #fff;
+  }
+
+  .type {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .project-info h2 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .year {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .project-card:hover img {
+    transform: scale(1.035);
+  }
+
+  .footer-container {
+    width: min(1120px, calc(100% - 270px));
+    margin-left: 230px;
+    padding-bottom: 40px;
+  }
+
+  @media (max-width: 1100px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .menu {
+      position: static;
+      padding: 20px 18px 0;
+    }
+
+    .name {
+      margin-bottom: 10px;
+    }
+
+    nav {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    nav a {
+      font-size: 14px;
+    }
+
+    main {
+      width: auto;
+      margin-left: 0;
+      padding: 70px 18px;
+    }
+
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+      width: auto;
+      margin-left: 0;
+      padding: 0 18px 30px;
+    }
+  }
+</style>

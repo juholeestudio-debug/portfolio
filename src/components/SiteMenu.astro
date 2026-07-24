@@ -1,0 +1,88 @@
+---
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+---
+
+<header class:list={["site-header", { overlay }]}>
+  <a class="site-name" href="/">Juho Lee</a>
+
+  <nav>
+    <a href="/work">Work</a>
+    <a href="/cv">CV</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 100;
+
+    width: min(1320px, calc(100% - 64px));
+    height: 78px;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-header.overlay {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .site-name {
+    color: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  nav a {
+    color: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 650px) {
+    .site-header {
+      width: calc(100% - 32px);
+      height: 68px;
+    }
+
+    .site-name {
+      font-size: 18px;
+    }
+
+    nav {
+      gap: 14px;
+    }
+
+    nav a {
+      font-size: 14px;
+    }
+  }
+</style>
