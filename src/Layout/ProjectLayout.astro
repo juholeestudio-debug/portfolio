@@ -1,17 +1,21 @@
 ---
-interface ProjectLink {
-  title: string;
-  href: string;
-}
+import {
+  getProjectBySlug,
+  getProjectNavigation,
+} from "../data/projects";
 
 interface Props {
-  title: string;
-  year?: string | number;
-  medium?: string;
-  vimeo?: string;
-  description?: string;
-  newer?: ProjectLink;
-  older?: ProjectLink;
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+const project = getProjectBySlug(slug);
+
+if (!project) {
+  throw new Error(
+    `Project "${slug}" was not found in src/data/projects.ts`
+  );
 }
 
 const {
@@ -19,10 +23,10 @@ const {
   year,
   medium,
   vimeo,
-  description = `${title} — Juho Lee`,
-  newer,
-  older,
-} = Astro.props;
+  description = `${project.title} — Juho Lee`,
+} = project;
+
+const { newer, older } = getProjectNavigation(slug);
 
 const meta = [year, medium].filter(Boolean).join(" · ");
 ---
@@ -96,11 +100,13 @@ const meta = [year, medium].filter(Boolean).join(" · ");
             class="project-navigation"
             aria-label="Project navigation"
           >
-            <div class="project-navigation-side project-navigation-newer">
+            <div
+              class="project-navigation-side project-navigation-newer"
+            >
               {
                 newer && (
                   <a
-                    href={newer.href}
+                    href={`/work/${newer.slug}`}
                     aria-label={`Newer project: ${newer.title}`}
                   >
                     <span class="navigation-arrow">
@@ -115,11 +121,13 @@ const meta = [year, medium].filter(Boolean).join(" · ");
               }
             </div>
 
-            <div class="project-navigation-side project-navigation-older">
+            <div
+              class="project-navigation-side project-navigation-older"
+            >
               {
                 older && (
                   <a
-                    href={older.href}
+                    href={`/work/${older.slug}`}
                     aria-label={`Older project: ${older.title}`}
                   >
                     <span class="navigation-title">
@@ -184,7 +192,8 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     </div>
 
     <script>
-      const lightbox = document.querySelector("#lightbox");
+      const lightbox =
+        document.querySelector("#lightbox");
 
       const lightboxImage =
         lightbox?.querySelector(".lightbox-image");
@@ -257,8 +266,7 @@ const meta = [year, medium].filter(Boolean).join(" · ");
         lightboxImage.src =
           image.currentSrc || image.src;
 
-        lightboxImage.alt =
-          image.alt || "";
+        lightboxImage.alt = image.alt || "";
 
         if (lightboxCaption) {
           lightboxCaption.textContent =
@@ -289,23 +297,21 @@ const meta = [year, medium].filter(Boolean).join(" · ");
       }
 
       function openLightbox(index) {
-        if (!lightbox || projectImages.length === 0) {
+        if (
+          !lightbox ||
+          projectImages.length === 0
+        ) {
           return;
         }
 
         currentImageIndex = index;
-
         previouslyFocusedElement =
           document.activeElement;
 
         updateLightbox();
 
         lightbox.classList.add("is-open");
-
-        lightbox.setAttribute(
-          "aria-hidden",
-          "false"
-        );
+        lightbox.setAttribute("aria-hidden", "false");
 
         document.body.classList.add(
           "lightbox-active"
@@ -325,11 +331,7 @@ const meta = [year, medium].filter(Boolean).join(" · ");
         }
 
         lightbox.classList.remove("is-open");
-
-        lightbox.setAttribute(
-          "aria-hidden",
-          "true"
-        );
+        lightbox.setAttribute("aria-hidden", "true");
 
         document.body.classList.remove(
           "lightbox-active"
@@ -585,7 +587,6 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     padding: 10px 0;
 
     color: #777;
-
     font-size: 22px;
     line-height: 1.25;
 
