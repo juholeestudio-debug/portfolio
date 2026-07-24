@@ -1,10 +1,17 @@
 ---
+interface ProjectLink {
+  title: string;
+  href: string;
+}
+
 interface Props {
   title: string;
   year?: string | number;
   medium?: string;
   vimeo?: string;
   description?: string;
+  newer?: ProjectLink;
+  older?: ProjectLink;
 }
 
 const {
@@ -13,6 +20,8 @@ const {
   medium,
   vimeo,
   description = `${title} — Juho Lee`,
+  newer,
+  older,
 } = Astro.props;
 
 const meta = [year, medium].filter(Boolean).join(" · ");
@@ -56,6 +65,7 @@ const meta = [year, medium].filter(Boolean).join(" · ");
               src={vimeo}
               title={`${title} video`}
               allow="autoplay; fullscreen; picture-in-picture"
+              loading="lazy"
               allowfullscreen
             />
           </div>
@@ -79,6 +89,53 @@ const meta = [year, medium].filter(Boolean).join(" · ");
           <slot />
         </div>
       </article>
+
+      {
+        (newer || older) && (
+          <nav
+            class="project-navigation"
+            aria-label="Project navigation"
+          >
+            <div class="project-navigation-side project-navigation-newer">
+              {
+                newer && (
+                  <a
+                    href={newer.href}
+                    aria-label={`Newer project: ${newer.title}`}
+                  >
+                    <span class="navigation-arrow">
+                      ←
+                    </span>
+
+                    <span class="navigation-title">
+                      {newer.title}
+                    </span>
+                  </a>
+                )
+              }
+            </div>
+
+            <div class="project-navigation-side project-navigation-older">
+              {
+                older && (
+                  <a
+                    href={older.href}
+                    aria-label={`Older project: ${older.title}`}
+                  >
+                    <span class="navigation-title">
+                      {older.title}
+                    </span>
+
+                    <span class="navigation-arrow">
+                      →
+                    </span>
+                  </a>
+                )
+              }
+            </div>
+          </nav>
+        )
+      }
     </main>
 
     <div
@@ -97,48 +154,166 @@ const meta = [year, medium].filter(Boolean).join(" · ");
         ×
       </button>
 
-      <img
-        class="lightbox-image"
-        src=""
-        alt=""
-      />
+      <button
+        class="lightbox-arrow lightbox-previous"
+        type="button"
+        aria-label="Previous image"
+      >
+        ←
+      </button>
 
-      <div class="lightbox-caption"></div>
+      <div class="lightbox-content">
+        <img
+          class="lightbox-image"
+          src=""
+          alt=""
+        />
+
+        <div class="lightbox-caption"></div>
+      </div>
+
+      <button
+        class="lightbox-arrow lightbox-next"
+        type="button"
+        aria-label="Next image"
+      >
+        →
+      </button>
+
+      <div class="lightbox-counter"></div>
     </div>
 
     <script>
       const lightbox = document.querySelector("#lightbox");
+
       const lightboxImage =
         lightbox?.querySelector(".lightbox-image");
+
       const lightboxCaption =
         lightbox?.querySelector(".lightbox-caption");
+
+      const lightboxCounter =
+        lightbox?.querySelector(".lightbox-counter");
+
       const closeButton =
         lightbox?.querySelector(".lightbox-close");
 
-      const projectImages =
-        document.querySelectorAll(".project-image");
+      const previousButton =
+        lightbox?.querySelector(".lightbox-previous");
 
-      function openLightbox(image) {
+      const nextButton =
+        lightbox?.querySelector(".lightbox-next");
+
+      const projectImages = Array.from(
+        document.querySelectorAll(".project-image")
+      );
+
+      let currentImageIndex = 0;
+      let previouslyFocusedElement = null;
+
+      projectImages.forEach((image, index) => {
+        if (!(image instanceof HTMLImageElement)) {
+          return;
+        }
+
+        image.loading = "lazy";
+        image.decoding = "async";
+
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("role", "button");
+
+        image.setAttribute(
+          "aria-label",
+          image.alt
+            ? `Open image: ${image.alt}`
+            : `Open project image ${index + 1}`
+        );
+
+        image.addEventListener("click", () => {
+          openLightbox(index);
+        });
+
+        image.addEventListener("keydown", (event) => {
+          if (
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
+            event.preventDefault();
+            openLightbox(index);
+          }
+        });
+      });
+
+      function updateLightbox() {
+        const image = projectImages[currentImageIndex];
+
         if (
-          !lightbox ||
-          !(lightboxImage instanceof HTMLImageElement) ||
-          !(image instanceof HTMLImageElement)
+          !(image instanceof HTMLImageElement) ||
+          !(lightboxImage instanceof HTMLImageElement)
         ) {
           return;
         }
 
-        lightboxImage.src = image.currentSrc || image.src;
-        lightboxImage.alt = image.alt || "";
+        lightboxImage.src =
+          image.currentSrc || image.src;
+
+        lightboxImage.alt =
+          image.alt || "";
 
         if (lightboxCaption) {
           lightboxCaption.textContent =
-            image.dataset.caption || image.alt || "";
+            image.dataset.caption ||
+            image.alt ||
+            "";
         }
 
+        if (lightboxCounter) {
+          lightboxCounter.textContent =
+            projectImages.length > 1
+              ? `${currentImageIndex + 1} / ${projectImages.length}`
+              : "";
+        }
+
+        const hasMultipleImages =
+          projectImages.length > 1;
+
+        previousButton?.classList.toggle(
+          "is-hidden",
+          !hasMultipleImages
+        );
+
+        nextButton?.classList.toggle(
+          "is-hidden",
+          !hasMultipleImages
+        );
+      }
+
+      function openLightbox(index) {
+        if (!lightbox || projectImages.length === 0) {
+          return;
+        }
+
+        currentImageIndex = index;
+
+        previouslyFocusedElement =
+          document.activeElement;
+
+        updateLightbox();
+
         lightbox.classList.add("is-open");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.classList.add("lightbox-active");
-        closeButton?.focus();
+
+        lightbox.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+        document.body.classList.add(
+          "lightbox-active"
+        );
+
+        if (closeButton instanceof HTMLElement) {
+          closeButton.focus();
+        }
       }
 
       function closeLightbox() {
@@ -150,8 +325,15 @@ const meta = [year, medium].filter(Boolean).join(" · ");
         }
 
         lightbox.classList.remove("is-open");
-        lightbox.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("lightbox-active");
+
+        lightbox.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+        document.body.classList.remove(
+          "lightbox-active"
+        );
 
         window.setTimeout(() => {
           lightboxImage.src = "";
@@ -160,47 +342,92 @@ const meta = [year, medium].filter(Boolean).join(" · ");
           if (lightboxCaption) {
             lightboxCaption.textContent = "";
           }
-        }, 200);
+
+          if (lightboxCounter) {
+            lightboxCounter.textContent = "";
+          }
+        }, 180);
+
+        if (
+          previouslyFocusedElement instanceof HTMLElement
+        ) {
+          previouslyFocusedElement.focus();
+        }
       }
 
-      projectImages.forEach((image) => {
-        image.setAttribute("tabindex", "0");
-        image.setAttribute("role", "button");
+      function showPreviousImage() {
+        if (projectImages.length < 2) {
+          return;
+        }
 
-        image.addEventListener("click", () => {
-          openLightbox(image);
-        });
+        currentImageIndex =
+          (
+            currentImageIndex -
+            1 +
+            projectImages.length
+          ) % projectImages.length;
 
-        image.addEventListener("keydown", (event) => {
-          if (
-            event.key === "Enter" ||
-            event.key === " "
-          ) {
-            event.preventDefault();
-            openLightbox(image);
+        updateLightbox();
+      }
+
+      function showNextImage() {
+        if (projectImages.length < 2) {
+          return;
+        }
+
+        currentImageIndex =
+          (currentImageIndex + 1) %
+          projectImages.length;
+
+        updateLightbox();
+      }
+
+      closeButton?.addEventListener(
+        "click",
+        closeLightbox
+      );
+
+      previousButton?.addEventListener(
+        "click",
+        showPreviousImage
+      );
+
+      nextButton?.addEventListener(
+        "click",
+        showNextImage
+      );
+
+      lightbox?.addEventListener(
+        "click",
+        (event) => {
+          if (event.target === lightbox) {
+            closeLightbox();
           }
-        });
-      });
-
-      closeButton?.addEventListener("click", closeLightbox);
-
-      lightbox?.addEventListener("click", (event) => {
-        if (
-          event.target === lightbox ||
-          event.target === lightboxImage
-        ) {
-          closeLightbox();
         }
-      });
+      );
 
-      document.addEventListener("keydown", (event) => {
-        if (
-          event.key === "Escape" &&
-          lightbox?.classList.contains("is-open")
-        ) {
-          closeLightbox();
+      document.addEventListener(
+        "keydown",
+        (event) => {
+          if (
+            !lightbox?.classList.contains("is-open")
+          ) {
+            return;
+          }
+
+          if (event.key === "Escape") {
+            closeLightbox();
+          }
+
+          if (event.key === "ArrowLeft") {
+            showPreviousImage();
+          }
+
+          if (event.key === "ArrowRight") {
+            showNextImage();
+          }
         }
-      });
+      );
     </script>
   </body>
 </html>
@@ -251,7 +478,7 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     color: #777;
     font-size: 18px;
     line-height: 1.2;
-    transition: color 160ms ease;
+    transition: color 180ms ease;
   }
 
   .back:hover {
@@ -321,14 +548,6 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     cursor: zoom-in;
   }
 
-  .project-image:first-child {
-    margin-top: 0;
-  }
-
-  .project-image:last-child {
-    margin-bottom: 0;
-  }
-
   .project-image:focus-visible {
     outline: 1px solid #111;
     outline-offset: 5px;
@@ -342,6 +561,63 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     line-height: 1.4;
   }
 
+  .project-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    margin-top: 140px;
+    padding-top: 30px;
+
+    border-top: 1px solid #ddd;
+  }
+
+  .project-navigation-side {
+    min-width: 0;
+  }
+
+  .project-navigation-side a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+
+    max-width: 100%;
+    padding: 10px 0;
+
+    color: #777;
+
+    font-size: 22px;
+    line-height: 1.25;
+
+    transition: color 180ms ease;
+  }
+
+  .project-navigation-side a:hover {
+    color: #111;
+  }
+
+  .project-navigation-side a:focus-visible {
+    color: #111;
+    outline: 1px solid #111;
+    outline-offset: 6px;
+  }
+
+  .project-navigation-older {
+    text-align: right;
+  }
+
+  .project-navigation-older a {
+    justify-content: flex-end;
+  }
+
+  .navigation-title {
+    overflow-wrap: anywhere;
+  }
+
+  .navigation-arrow {
+    flex: 0 0 auto;
+  }
+
   .lightbox {
     position: fixed;
     inset: 0;
@@ -351,11 +627,12 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     align-items: center;
     justify-content: center;
 
-    padding: 40px;
+    padding: 48px 100px;
 
     visibility: hidden;
     opacity: 0;
-    background: rgba(0, 0, 0, 0.94);
+
+    background: rgba(0, 0, 0, 0.95);
 
     transition:
       opacity 180ms ease,
@@ -367,19 +644,37 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     opacity: 1;
   }
 
+  .lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 100%;
+    max-height: 100%;
+  }
+
   .lightbox-image {
     display: block;
-    max-width: 94vw;
-    max-height: 90vh;
+    max-width: 88vw;
+    max-height: 84vh;
     object-fit: contain;
-    cursor: zoom-out;
+  }
+
+  .lightbox-caption {
+    min-height: 18px;
+    margin-top: 14px;
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: center;
   }
 
   .lightbox-close {
     position: fixed;
     top: 20px;
     right: 25px;
-    z-index: 1001;
+    z-index: 1002;
 
     margin: 0;
     padding: 0;
@@ -396,16 +691,46 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     cursor: pointer;
   }
 
-  .lightbox-caption {
+  .lightbox-arrow {
     position: fixed;
-    right: 30px;
+    top: 50%;
+    z-index: 1002;
+
+    padding: 20px;
+
+    border: 0;
+    background: transparent;
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-previous {
+    left: 18px;
+  }
+
+  .lightbox-next {
+    right: 18px;
+  }
+
+  .lightbox-arrow.is-hidden {
+    display: none;
+  }
+
+  .lightbox-counter {
+    position: fixed;
+    right: 28px;
     bottom: 22px;
-    left: 30px;
 
     color: #fff;
-    font-size: 13px;
-    line-height: 1.4;
-    text-align: center;
+    font-size: 12px;
+    line-height: 1.2;
   }
 
   @media (max-width: 900px) {
@@ -453,13 +778,25 @@ const meta = [year, medium].filter(Boolean).join(" · ");
       font-size: 12px;
     }
 
+    .project-navigation {
+      gap: 18px;
+      margin-top: 90px;
+      padding-top: 20px;
+    }
+
+    .project-navigation-side a {
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 16px;
+    }
+
     .lightbox {
-      padding: 18px;
+      padding: 55px 18px 48px;
     }
 
     .lightbox-image {
       max-width: 100%;
-      max-height: 86vh;
+      max-height: 77vh;
     }
 
     .lightbox-close {
@@ -468,10 +805,31 @@ const meta = [year, medium].filter(Boolean).join(" · ");
       font-size: 36px;
     }
 
+    .lightbox-arrow {
+      top: auto;
+      bottom: 6px;
+      padding: 14px;
+      font-size: 25px;
+      transform: none;
+    }
+
+    .lightbox-previous {
+      left: 8px;
+    }
+
+    .lightbox-next {
+      right: 8px;
+    }
+
+    .lightbox-counter {
+      right: 50%;
+      bottom: 21px;
+      transform: translateX(50%);
+    }
+
     .lightbox-caption {
-      right: 18px;
-      bottom: 14px;
-      left: 18px;
+      max-width: calc(100vw - 36px);
+      margin-top: 10px;
       font-size: 12px;
     }
   }
