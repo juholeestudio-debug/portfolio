@@ -8,7 +8,15 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  {
+ {
+  slug: "cat-ii",
+  title: "CAT II",
+  year: "2026",
+  medium: "Animation, LED Installation",
+  description:
+    "CAT II, an animation created for the LED wall at Cologne Bonn Airport.",
+},
+    {
   slug: "opposable-thumb",
   title: "Opposable Thumb",
   year: "2025",
