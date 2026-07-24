@@ -39,6 +39,22 @@
       </header>
 
       <section class="contact-content">
+
+        <div class="contact-animation">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+          >
+            <source
+              src="/video/sori.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
         <div class="contact-item">
           <div class="label">Email</div>
 
@@ -58,6 +74,7 @@
             @juho_2d
           </a>
         </div>
+
       </section>
 
       <div class="legal-links">
@@ -141,6 +158,16 @@
     padding-left: 32px;
   }
 
+  .contact-animation {
+    margin-bottom: 48px;
+  }
+
+  .contact-animation video {
+    display: block;
+    width: 180px;
+    height: auto;
+  }
+
   .contact-item {
     margin-bottom: 34px;
   }
@@ -217,6 +244,14 @@
       padding-right: 18px;
       padding-bottom: 100px;
       padding-left: 18px;
+    }
+
+    .contact-animation {
+      margin-bottom: 36px;
+    }
+
+    .contact-animation video {
+      width: 150px;
     }
 
     .contact-item {
