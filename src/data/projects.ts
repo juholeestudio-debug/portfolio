@@ -16,6 +16,14 @@ export const projects: Project[] = [
   description:
     "CAT II, an animation created for the LED wall at Cologne Bonn Airport.",
 },
+{
+  slug: "rainbow-rice-cake",
+  title: "rainbow rice cake",
+  year: "2026",
+  medium: "Drawing, Graphic Novel, Animation",
+  description:
+    "rainbow rice cake is a drawing-based project exploring memory, family and military service.",
+},
     {
   slug: "opposable-thumb",
   title: "Opposable Thumb",
