@@ -1,1 +1,114 @@
-<Header />
+---
+interface Props {
+  home?: boolean;
+  mobileFixed?: boolean;
+}
+
+const {
+  home = false,
+  mobileFixed = false,
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    "site-header",
+    {
+      home,
+      "mobile-fixed": mobileFixed,
+    },
+  ]}
+>
+  <a class="site-name" href="/">Juho Lee</a>
+
+  <nav>
+    <a href="/work">Work</a>
+    <a href="/cv">CV</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 1000;
+
+    width: auto;
+    height: auto;
+    margin: 0;
+
+    display: block;
+
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .site-name {
+    display: block;
+    margin: 0 0 20px;
+
+    color: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  nav a {
+    display: block;
+
+    color: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 760px) {
+    .site-header {
+      position: static;
+      top: auto;
+      left: auto;
+
+      padding: 20px 18px 0;
+    }
+
+    .site-header.home,
+    .site-header.mobile-fixed {
+      position: fixed;
+      top: 20px;
+      left: 18px;
+      padding: 0;
+    }
+
+    .site-name {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    nav {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    nav a {
+      font-size: 14px;
+    }
+  }
+</style>

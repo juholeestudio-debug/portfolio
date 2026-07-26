@@ -1,4 +1,5 @@
 ---
+import Header from "../components/Header.astro";
 ---
 
 <!doctype html>
@@ -28,18 +29,9 @@
 
   <body>
     <main class="contact-page">
-      <header class="menu">
-        <a class="name" href="/">Juho Lee</a>
-
-        <nav>
-          <a href="/work">Work</a>
-          <a href="/cv">CV</a>
-          <a href="/contact">Contact</a>
-        </nav>
-      </header>
+      <Header mobileFixed />
 
       <section class="contact-content">
-
         <div class="contact-animation">
           <video
             autoplay
@@ -74,7 +66,6 @@
             @juho_2d
           </a>
         </div>
-
       </section>
 
       <div class="legal-links">
@@ -118,39 +109,6 @@
     background: #fff;
   }
 
-  .menu {
-    position: fixed;
-    top: 28px;
-    left: 32px;
-    z-index: 100;
-  }
-
-  .name {
-    display: block;
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  nav a {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.25;
-  }
-
-  nav a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
   .contact-content {
     padding-top: 190px;
     padding-right: 32px;
@@ -174,8 +132,8 @@
 
   .label {
     margin-bottom: 5px;
-    font-size: 12px;
     color: #777;
+    font-size: 12px;
   }
 
   .contact-content a {
@@ -219,26 +177,6 @@
   }
 
   @media (max-width: 760px) {
-    .menu {
-      top: 20px;
-      left: 18px;
-    }
-
-    .name {
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-
-    nav {
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 15px;
-    }
-
-    nav a {
-      font-size: 14px;
-    }
-
     .contact-content {
       padding-top: 130px;
       padding-right: 18px;
