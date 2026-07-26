@@ -58,6 +58,23 @@ const projects = [
     image: "/images/vis-a-vis-verification.png",
   },
 ];
+
+const filmography = [
+  {
+    title: "Why Hasn't Everything Disappeared Yet",
+    year: "2026",
+    role: "Actor",
+    href: "/work/why-hasnt-everything-disappeared-yet",
+    image: "/images/why-hasnt-everything-disappeared-yet-cover.jpg",
+  },
+  {
+    title: "Come As You Are",
+    year: "2025",
+    role: "Actor and model",
+    href: "/work/come-as-you-are",
+    image: "/images/come-as-you-are-cover.jpg",
+  },
+];
 ---
 
 <!doctype html>
@@ -72,7 +89,7 @@ const projects = [
 
     <meta
       name="description"
-      content="Selected work by Juho Lee"
+      content="Selected work and filmography by Juho Lee"
     />
 
     <title>Work — Juho Lee</title>
@@ -89,27 +106,55 @@ const projects = [
     <Header />
 
     <main>
-      <h1>Selected Work</h1>
+      <section class="work-section">
+        <h1>Selected Work</h1>
 
-      <section class="project-grid">
-        {
-          projects.map((project) => (
-            <a class="project-card" href={project.href}>
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-              />
+        <div class="project-grid">
+          {
+            projects.map((project) => (
+              <a class="project-card" href={project.href}>
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                />
 
-              <div class="overlay"></div>
+                <div class="overlay"></div>
 
-              <div class="project-info">
-                <h2>{project.title}</h2>
-                <span class="year">{project.year}</span>
-              </div>
-            </a>
-          ))
-        }
+                <div class="project-info">
+                  <h2>{project.title}</h2>
+                  <span class="year">{project.year}</span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="work-section filmography-section">
+        <h1>Filmography</h1>
+
+        <div class="project-grid">
+          {
+            filmography.map((film) => (
+              <a class="project-card" href={film.href}>
+                <img
+                  src={film.image}
+                  alt={film.title}
+                  loading="lazy"
+                />
+
+                <div class="overlay"></div>
+
+                <div class="project-info">
+                  <span class="role">{film.role}</span>
+                  <h2>{film.title}</h2>
+                  <span class="year">{film.year}</span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
       </section>
     </main>
 
@@ -148,6 +193,14 @@ const projects = [
     width: min(1120px, calc(100% - 270px));
     margin-left: 230px;
     padding: 47px 0 80px;
+  }
+
+  .work-section {
+    margin-bottom: 80px;
+  }
+
+  .work-section:last-child {
+    margin-bottom: 0;
   }
 
   h1 {
@@ -200,6 +253,15 @@ const projects = [
     color: #fff;
   }
 
+  .role {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
   .project-info h2 {
     margin: 0;
     font-size: 30px;
@@ -234,6 +296,10 @@ const projects = [
       width: auto;
       margin-left: 0;
       padding: 70px 18px;
+    }
+
+    .work-section {
+      margin-bottom: 60px;
     }
 
     .project-grid {
