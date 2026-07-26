@@ -1,14 +1,8 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-<main>
-  <p class="intro">
-    Juho Lee is a Korean artist based in Cologne, Germany, working across
-    drawing, animation, installation, and moving image.
-  </p>
 
 const education = [
-  
   {
     year: "2021—",
     title: "Kunsthochschule für Medien Köln",
@@ -117,6 +111,11 @@ const performance = [
     <Header />
 
     <main>
+      <p class="intro">
+        Juho Lee is a Korean artist based in Cologne, Germany, working across
+        drawing, animation, installation, and moving image.
+      </p>
+
       <section>
         <h1>Education</h1>
 
@@ -212,6 +211,14 @@ const performance = [
     padding: 47px 0 100px;
   }
 
+  .intro {
+    max-width: 620px;
+    margin: 0 0 72px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
   section {
     display: grid;
     grid-template-columns: 150px minmax(0, 1fr);
@@ -266,6 +273,11 @@ const performance = [
       width: auto;
       margin-left: 0;
       padding: 70px 18px;
+    }
+
+    .intro {
+      margin-bottom: 54px;
+      font-size: 15px;
     }
 
     section {
