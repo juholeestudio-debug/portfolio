@@ -1,5 +1,13 @@
 export const productionProjects = [
   {
+    slug: "no-wuckers",
+    title: "No Wuckers",
+    year: "2026",
+    image: "/images/production/no-wuckers-cover.png",
+    passwordEnv: "PRODUCTION_PASSWORD_BOLSITA",
+    description: "Character development and animation production.",
+  },
+  {
     slug: "hotel-covington",
     title: "Hotel Covington",
     year: "2026",
@@ -8,21 +16,14 @@ export const productionProjects = [
     description: "Projection mapping animatic production.",
   },
   {
-    slug: "bolsita",
-    title: "Bolsita",
+    slug: "theseus",
+    title: "Theseus",
     year: "2026",
-    image: "/images/production/bolsita-cover.jpg",
+    image: "/images/production/theseus-cover.jpg",
     passwordEnv: "PRODUCTION_PASSWORD_BOLSITA",
     description: "Character development and animation production.",
   },
-  {
-    slug: "rainbow-rice-cake",
-    title: "Rainbow Rice Cake",
-    year: "2026",
-    image: "/images/production/rainbow-rice-cake-cover.jpg",
-    passwordEnv: "PRODUCTION_PASSWORD_RAINBOW_RICE_CAKE",
-    description: "Animation development and production materials.",
-  },
+  
 ];
 
 export type ProductionProject =
