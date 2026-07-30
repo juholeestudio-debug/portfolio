@@ -1,0 +1,251 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { productionProjects } from "../../data/productionProjects";
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <meta
+      name="description"
+      content="Internal production projects by Juho Lee"
+    />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Production — Juho Lee</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon.png"
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <div class="page-heading">
+        <div>
+          <h1>Production</h1>
+
+          <p>
+            Internal production materials for collaborators.
+          </p>
+        </div>
+
+        <span class="internal-label">Internal</span>
+      </div>
+
+      <section class="project-grid">
+        {
+          productionProjects.map((project) => (
+            <a
+              class="project-card"
+              href={`/production/${project.slug}`}
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+              />
+
+              <div class="overlay"></div>
+
+              <div class="project-info">
+                <span class="lock-label">Password protected</span>
+
+                <h2>{project.title}</h2>
+
+                <span class="year">{project.year}</span>
+              </div>
+            </a>
+          ))
+        }
+      </section>
+    </main>
+
+    <div class="footer-container">
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html),
+  :global(body) {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  :global(body) {
+    background: #fff;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  main {
+    width: min(1120px, calc(100% - 270px));
+    margin-left: 230px;
+    padding: 47px 0 80px;
+  }
+
+  .page-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .page-heading p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 12px;
+  }
+
+  .internal-label {
+    margin-top: 3px;
+    padding: 4px 7px;
+    border: 1px solid #111;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .project-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #ddd;
+  }
+
+  .project-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms ease;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.76),
+      rgba(0, 0, 0, 0.08) 65%,
+      transparent
+    );
+  }
+
+  .project-info {
+    position: absolute;
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    color: #fff;
+  }
+
+  .lock-label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .project-info h2 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .year {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .project-card:hover img {
+    transform: scale(1.035);
+  }
+
+  .footer-container {
+    width: min(1120px, calc(100% - 270px));
+    margin-left: 230px;
+    padding-bottom: 40px;
+  }
+
+  @media (max-width: 1100px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    main {
+      width: auto;
+      margin-left: 0;
+      padding: 70px 18px;
+    }
+
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-info h2 {
+      font-size: 27px;
+    }
+
+    .footer-container {
+      width: auto;
+      margin-left: 0;
+      padding: 0 18px 30px;
+    }
+  }
+</style>

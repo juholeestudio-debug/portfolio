@@ -25,6 +25,11 @@ const {
     <a href="/work">Work</a>
     <a href="/cv">CV</a>
     <a href="/contact">Contact</a>
+
+    <a class="production-link" href="/production">
+      Production
+      <span>Internal</span>
+    </a>
   </nav>
 </header>
 
@@ -79,6 +84,34 @@ const {
     text-underline-offset: 4px;
   }
 
+  .production-link {
+    margin-top: 14px;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+  }
+
+  .production-link:hover {
+    opacity: 1;
+  }
+
+  .production-link span {
+    display: inline-block;
+    margin-left: 6px;
+
+    padding: 2px 5px;
+
+    border: 1px solid #111;
+
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    vertical-align: middle;
+  }
+
   @media (max-width: 760px) {
     .site-header {
       position: static;
@@ -105,10 +138,19 @@ const {
       flex-direction: row;
       align-items: flex-start;
       gap: 15px;
+      flex-wrap: wrap;
     }
 
     nav a {
       font-size: 14px;
+    }
+
+    .production-link {
+      margin-top: 0;
+    }
+
+    .production-link span {
+      display: none;
     }
   }
 </style>
