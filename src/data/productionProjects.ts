@@ -8,10 +8,10 @@ export const productionProjects = [
     description: "Character development and animation production.",
   },
   {
-    slug: "hotel-covington",
-    title: "Hotel Covington",
+    slug: "mascarada",
+    title: "Mascarada",
     year: "2026",
-    image: "/images/production/hotel-covington-cover.jpg",
+    image: "/images/production/mascarada-cover.jpg",
     passwordEnv: "PRODUCTION_PASSWORD_HOTEL_COVINGTON",
     description: "Projection mapping animatic production.",
   },
