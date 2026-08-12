@@ -78,6 +78,7 @@ const performance = [
     year: "2023—",
     title: "Tomorrow is another day",
     text: "Model, Düsseldorf",
+    profile: "https://www.tomorrowisanotherday.de/juho",
   },
 ];
 ---
@@ -112,7 +113,8 @@ const performance = [
 
     <main>
       <p class="intro">
-        Juho Lee is based in Cologne, Germany. He works across drawing, animation, installation, and moving image.
+        Juho Lee is based in Cologne, Germany. He works across drawing,
+        animation, installation, and moving image.
       </p>
 
       <section>
@@ -163,7 +165,21 @@ const performance = [
                 <span class="year">{item.year}</span>
 
                 <div>
-                  <p class="entry-title">{item.title}</p>
+                  <div class="entry-title-row">
+                    <p class="entry-title">{item.title}</p>
+
+                    {item.profile && (
+                      <a
+                        class="profile-link"
+                        href={item.profile}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Profile
+                      </a>
+                    )}
+                  </div>
+
                   <p class="secondary">{item.text}</p>
                 </div>
               </div>
@@ -248,8 +264,36 @@ const performance = [
     margin: 0;
   }
 
+  .entry-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   .entry-title {
     font-weight: 500;
+  }
+
+  .profile-link {
+    display: inline-block;
+
+    padding: 2px 5px;
+    border: 1px solid #111;
+
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    vertical-align: middle;
+  }
+
+  .profile-link:hover {
+    background: #111;
+    color: #fff;
   }
 
   .year {
@@ -288,6 +332,15 @@ const performance = [
     .entry {
       grid-template-columns: 76px minmax(0, 1fr);
       gap: 14px;
+    }
+
+    .entry-title-row {
+      gap: 7px;
+    }
+
+    .profile-link {
+      padding: 2px 5px;
+      font-size: 8px;
     }
 
     .footer-container {
