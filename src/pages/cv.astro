@@ -68,6 +68,8 @@ const performance = [
     year: "2024",
     title: "Balenciaga Winter 2025",
     text: "Runway show, look 47",
+    link: "https://www.balenciaga.com/de-de/winter-24",
+    linkLabel: "Look 47",
   },
   {
     year: "2024—2025",
@@ -78,7 +80,8 @@ const performance = [
     year: "2023—",
     title: "Tomorrow is another day",
     text: "Model, Düsseldorf",
-    profile: "https://www.tomorrowisanotherday.de/juho",
+    link: "https://www.tomorrowisanotherday.de/juho",
+    linkLabel: "Profile",
   },
 ];
 ---
@@ -168,14 +171,14 @@ const performance = [
                   <div class="entry-title-row">
                     <p class="entry-title">{item.title}</p>
 
-                    {item.profile && (
+                    {item.link && (
                       <a
-                        class="profile-link"
-                        href={item.profile}
+                        class="small-link"
+                        href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Profile
+                        {item.linkLabel}
                       </a>
                     )}
                   </div>
@@ -275,7 +278,7 @@ const performance = [
     font-weight: 500;
   }
 
-  .profile-link {
+  .small-link {
     display: inline-block;
 
     padding: 2px 5px;
@@ -291,7 +294,7 @@ const performance = [
     vertical-align: middle;
   }
 
-  .profile-link:hover {
+  .small-link:hover {
     background: #111;
     color: #fff;
   }
@@ -338,7 +341,7 @@ const performance = [
       gap: 7px;
     }
 
-    .profile-link {
+    .small-link {
       padding: 2px 5px;
       font-size: 8px;
     }
