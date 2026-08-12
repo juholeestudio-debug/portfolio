@@ -50,28 +50,135 @@ const heroImage = "/images/einsteigen-cover.webp";
       const hero = document.querySelector(".hero-image");
 
       if (hero instanceof HTMLImageElement) {
-        let current = 0;
-        let target = 0;
+        let currentY = 0;
+        let targetY = 0;
 
+        let currentX = 60;
+        let targetX = 60;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        let touchPreviousX = 0;
+        let touchPreviousY = 0;
+
+        const clamp = (value, min, max) =>
+          Math.max(min, Math.min(max, value));
+
+        const isPhonePortrait = () =>
+          window.innerWidth <= 760 &&
+          window.innerHeight > window.innerWidth;
+
+        /*
+          DESKTOP / LAPTOP
+          휠 또는 트랙패드 → 이미지 위아래 이동
+        */
         window.addEventListener(
           "wheel",
           (event) => {
+            if (window.matchMedia("(pointer: coarse)").matches) {
+              return;
+            }
+
             event.preventDefault();
 
-            target += event.deltaY * 0.03;
-            target = Math.max(0, Math.min(100, target));
+            targetY += event.deltaY * 0.03;
+            targetY = clamp(targetY, 0, 100);
           },
           { passive: false }
         );
 
+        /*
+          TOUCH START
+        */
+        window.addEventListener(
+          "touchstart",
+          (event) => {
+            const touch = event.touches[0];
+
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+
+            touchPreviousX = touch.clientX;
+            touchPreviousY = touch.clientY;
+          },
+          { passive: true }
+        );
+
+        /*
+          TOUCH MOVE
+        */
+        window.addEventListener(
+          "touchmove",
+          (event) => {
+            if (event.touches.length !== 1) return;
+
+            const touch = event.touches[0];
+
+            const deltaX =
+              touch.clientX - touchPreviousX;
+
+            const deltaY =
+              touch.clientY - touchPreviousY;
+
+            /*
+              PHONE PORTRAIT
+              좌우 드래그 → 이미지 좌우 이동
+            */
+            if (isPhonePortrait()) {
+              event.preventDefault();
+
+              targetX -= deltaX * 0.12;
+              targetX = clamp(targetX, 0, 100);
+            }
+
+            /*
+              TABLET / IPAD / LANDSCAPE TOUCH
+              위아래 드래그 → 이미지 위아래 이동
+            */
+            else {
+              event.preventDefault();
+
+              targetY -= deltaY * 0.12;
+              targetY = clamp(targetY, 0, 100);
+            }
+
+            touchPreviousX = touch.clientX;
+            touchPreviousY = touch.clientY;
+          },
+          { passive: false }
+        );
+
+        /*
+          화면 크기가 바뀌었을 때
+        */
+        window.addEventListener("resize", () => {
+          if (!isPhonePortrait()) {
+            targetX = 50;
+            currentX = 50;
+          } else if (targetX === 50) {
+            targetX = 60;
+            currentX = 60;
+          }
+        });
+
+        /*
+          부드러운 이동
+        */
         const animate = () => {
-          current += (target - current) * 0.08;
+          currentY +=
+            (targetY - currentY) * 0.08;
+
+          currentX +=
+            (targetX - currentX) * 0.08;
 
           const xPosition =
-            window.innerWidth <= 760 ? "60%" : "center";
+            isPhonePortrait()
+              ? currentX
+              : 50;
 
           hero.style.objectPosition =
-            `${xPosition} ${current}%`;
+            `${xPosition}% ${currentY}%`;
 
           requestAnimationFrame(animate);
         };
@@ -97,8 +204,10 @@ const heroImage = "/images/einsteigen-cover.webp";
   :global(body) {
     overflow: hidden;
     overscroll-behavior: none;
+
     background: #fff;
     color: #111;
+
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
     line-height: 1.35;
@@ -111,11 +220,20 @@ const heroImage = "/images/einsteigen-cover.webp";
 
   .home {
     position: relative;
+
     width: 100%;
     height: 100vh;
     height: 100dvh;
+
     overflow: hidden;
+
     background: #fff;
+
+    /*
+      모바일 Safari에서 페이지 자체가
+      튕기거나 움직이는 것을 방지
+    */
+    touch-action: none;
   }
 
   .hero-image {
@@ -124,14 +242,27 @@ const heroImage = "/images/einsteigen-cover.webp";
     z-index: 0;
 
     display: block;
+
     width: 100%;
     height: 100%;
 
     object-fit: cover;
+
+    /*
+      데스크톱 시작 위치:
+      이미지의 가장 위
+    */
     object-position: center 0%;
 
     user-select: none;
+    -webkit-user-select: none;
+
     pointer-events: none;
+
+    /*
+      iOS에서 이미지 길게 누르기 방지
+    */
+    -webkit-touch-callout: none;
   }
 
   .legal-links {
@@ -142,6 +273,7 @@ const heroImage = "/images/einsteigen-cover.webp";
 
     display: flex;
     align-items: center;
+
     gap: 20px;
 
     padding: 5px 7px;
@@ -164,11 +296,21 @@ const heroImage = "/images/einsteigen-cover.webp";
   }
 
   @media (max-width: 760px) {
+    .hero-image {
+      /*
+        핸드폰 세로에서 첫 화면 시작 위치
+      */
+      object-position: 60% 0%;
+    }
+
     .legal-links {
       right: 18px;
       bottom: 18px;
+
       gap: 14px;
+
       padding: 5px 7px;
+
       font-size: 11px;
     }
   }
