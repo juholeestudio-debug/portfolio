@@ -58,13 +58,18 @@ const performance = [
     year: "2026",
     title: "Why Hasn't Everything Disappeared Yet",
     text: "Actor",
+    festivals: [
+      "IFFR 2026 — Bright Future, World Premiere",
+      "Sofia International Film Festival 2026",
+      "FILMADRID 2026 — Grand Prix",
+    ],
   },
   {
     year: "2025",
     title: "Come As You Are",
     text: "Actor and model",
     link: "https://www.achtung-mode.com/achtung-presents-come-as-you-are/",
-    linkLabel: "Achtung",
+    linkLabel: "Achtung Magazine",
   },
   {
     year: "2024",
@@ -191,6 +196,14 @@ const performance = [
                   )}
 
                   <p class="secondary">{item.text}</p>
+
+                  {item.festivals && (
+                    <div class="festival-list">
+                      {item.festivals.map((festival) => (
+                        <p>{festival}</p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -323,6 +336,17 @@ const performance = [
     font-weight: 400;
   }
 
+  .festival-list {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .festival-list p {
+    margin: 0;
+  }
+
   .footer-container {
     width: min(760px, calc(100% - 330px));
     margin-left: 310px;
@@ -363,6 +387,11 @@ const performance = [
 
     .by-line {
       font-size: 15px;
+    }
+
+    .festival-list {
+      margin-top: 8px;
+      font-size: 12px;
     }
 
     .footer-container {
