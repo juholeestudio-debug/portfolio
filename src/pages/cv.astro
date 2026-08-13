@@ -67,6 +67,7 @@ const performance = [
   {
     year: "2024",
     title: "Balenciaga Winter 2025",
+    by: "by Demna Gvasalia",
     text: "Runway show, look 47",
     link: "https://www.balenciaga.com/de-de/winter-24",
     linkLabel: "Look 47",
@@ -183,6 +184,10 @@ const performance = [
                     )}
                   </div>
 
+                  {item.by && (
+                    <p class="by-line">{item.by}</p>
+                  )}
+
                   <p class="secondary">{item.text}</p>
                 </div>
               </div>
@@ -278,6 +283,15 @@ const performance = [
     font-weight: 500;
   }
 
+  .by-line {
+    width: 100%;
+    margin: 1px 0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.35;
+    text-align: center;
+  }
+
   .small-link {
     display: inline-block;
 
@@ -344,6 +358,10 @@ const performance = [
     .small-link {
       padding: 2px 5px;
       font-size: 8px;
+    }
+
+    .by-line {
+      font-size: 15px;
     }
 
     .footer-container {
