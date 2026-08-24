@@ -22,6 +22,7 @@ const {
   title,
   year,
   medium,
+  credits = [],
   vimeo,
   description = `${project.title} — Juho Lee`,
 } = project;
@@ -84,6 +85,16 @@ const meta = [year, medium].filter(Boolean).join(" · ");
             meta && (
               <div class="meta">
                 {meta}
+              </div>
+            )
+          }
+
+          {
+            credits.length > 0 && (
+              <div class="credits">
+                {credits.map((credit) => (
+                  <div>{credit}</div>
+                ))}
               </div>
             )
           }
@@ -527,6 +538,13 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     line-height: 1.35;
   }
 
+  .credits {
+    margin-top: 4px;
+    color: #777;
+    font-size: 20px;
+    line-height: 1.35;
+  }
+
   .project-body p {
     margin: 0 0 28px;
     font-size: 20px;
@@ -760,6 +778,11 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     }
 
     .meta {
+      font-size: 16px;
+    }
+
+    .credits {
+      margin-top: 4px;
       font-size: 16px;
     }
 
