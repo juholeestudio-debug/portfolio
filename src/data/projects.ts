@@ -37,7 +37,7 @@ export const projects: Project[] = [
     slug: "opposable-thumb",
     title: "Opposable Thumb",
     year: "2025",
-    medium: "Projection Mapping",
+    medium: "Projection Mapping, Animation",
     credits: [{
         text: "Sound by",
         name: "Yonte",
