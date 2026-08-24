@@ -38,7 +38,11 @@ export const projects: Project[] = [
     title: "Opposable Thumb",
     year: "2025",
     medium: "Projection Mapping",
-    credits: [],
+    credits: [{
+        text: "Sound by",
+        name: "Yonte",
+        url: "https://open.spotify.com/intl-de/artist/2daibaY014WocMDS3SZun5",
+      },],
     vimeo:
       "https://player.vimeo.com/video/1212564684?badge=0&autopause=0&player_id=0&app_id=58479",
     description:
