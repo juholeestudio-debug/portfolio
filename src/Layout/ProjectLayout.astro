@@ -93,7 +93,26 @@ const meta = [year, medium].filter(Boolean).join(" · ");
             credits.length > 0 && (
               <div class="credits">
                 {credits.map((credit) => (
-                  <div>{credit}</div>
+                  <div class="credit-line">
+                    <span>{credit.text}</span>
+
+                    {credit.name && (
+                      <>
+                        {" "}
+                        {credit.url ? (
+                          <a
+                            href={credit.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {credit.name}
+                          </a>
+                        ) : (
+                          <span>{credit.name}</span>
+                        )}
+                      </>
+                    )}
+                  </div>
                 ))}
               </div>
             )
@@ -543,6 +562,16 @@ const meta = [year, medium].filter(Boolean).join(" · ");
     color: #777;
     font-size: 20px;
     line-height: 1.35;
+  }
+
+  .credit-line a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .credit-line a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .project-body p {

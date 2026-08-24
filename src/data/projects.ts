@@ -1,9 +1,15 @@
+export interface ProjectCredit {
+  text: string;
+  name?: string;
+  url?: string;
+}
+
 export interface Project {
   slug: string;
   title: string;
   year?: string | number;
   medium?: string;
-  credits?: string[];
+  credits?: ProjectCredit[];
   vimeo?: string;
   description?: string;
 }
@@ -42,8 +48,14 @@ export const projects: Project[] = [
     slug: "arena-waves",
     title: "Arena Waves",
     year: "2023",
-    medium: "Projection Mapping",
-    credits: [],
+    medium: "Projection Mapping, Animation",
+    credits: [
+      {
+        text: "Sound by",
+        name: "Valeria Oggioni",
+        url: "https://valeria-oggioni.bandcamp.com/",
+      },
+    ],
     vimeo:
       "https://player.vimeo.com/video/1037197158?badge=0&autopause=0&player_id=0&app_id=58479",
     description:
@@ -54,7 +66,13 @@ export const projects: Project[] = [
     title: "Random Box",
     year: "2023",
     medium: "Animation",
-    credits: [],
+    credits: [
+      {
+        text: "Sound by",
+        name: "Kyungjae Kim",
+        url: "https://kyungjaekim.de",
+      },
+    ],
     vimeo:
       "https://player.vimeo.com/video/825445485?badge=0&autopause=0&player_id=0&app_id=58479",
     description:
@@ -75,7 +93,7 @@ export const projects: Project[] = [
     slug: "snake-sarangbang-stand",
     title: "Snake, 사랑방, Stand",
     year: "2021",
-    medium: "Video Installation",
+    medium: "Video Installation, Animation",
     credits: [],
     vimeo:
       "https://player.vimeo.com/video/482262916?badge=0&autopause=0&player_id=0&app_id=58479",
@@ -86,8 +104,14 @@ export const projects: Project[] = [
     slug: "delayed-choice",
     title: "delayed choice",
     year: "2021",
-    medium: "Video",
-    credits: [],
+    medium: "Video Installation",
+    credits: [
+      {
+        text: "Story and voice by",
+        name: "Kyungjae Kim",
+        url: "https://kyungjaekim.de",
+      },
+    ],
     vimeo:
       "https://player.vimeo.com/video/509220608?badge=0&autopause=0&player_id=0&app_id=58479",
     description:
@@ -99,7 +123,10 @@ export const projects: Project[] = [
     year: "2021",
     medium: "Video Installation",
     credits: [
-      "Performance with Sarah Niecke",
+      {
+        text: "Performance with",
+        name: "Sarah Niecke",
+      },
     ],
     vimeo:
       "https://player.vimeo.com/video/499670321?badge=0&autopause=0&player_id=0&app_id=58479",
