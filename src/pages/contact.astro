@@ -32,54 +32,137 @@ import Header from "../components/Header.astro";
       <Header mobileFixed />
 
       <section class="contact-content">
-        <div class="contact-animation">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-          >
-            <source
-              src="/video/sori.mp4"
-              type="video/mp4"
-            />
-          </video>
+
+        <!-- LEFT CONTACT -->
+
+        <div class="contact-left">
+
+          <div class="contact-animation">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+            >
+              <source
+                src="/video/sori.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+
+          <div class="contact-item">
+            <div class="label">Email</div>
+
+            <a href="mailto:juholee.studio@gmail.com">
+              juholee.studio@gmail.com
+            </a>
+          </div>
+
+          <div class="contact-item">
+            <div class="label">Instagram</div>
+
+            <a
+              href="https://www.instagram.com/juho_2d/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @juho_2d
+            </a>
+          </div>
+
         </div>
 
-        <div class="contact-item">
-          <div class="label">Email</div>
 
-          <a href="mailto:juholee.studio@gmail.com">
-            juholee.studio@gmail.com
-          </a>
+        <!-- SEND A MESSAGE -->
+
+        <div class="inquiry">
+
+          <div class="inquiry-title">
+            Send a message
+          </div>
+
+          <form class="inquiry-form">
+
+            <div class="form-field">
+              <label for="name">
+                Name
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+              />
+            </div>
+
+
+            <div class="form-field">
+              <label for="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+              />
+            </div>
+
+
+            <div class="form-field">
+              <label for="message">
+                Message
+              </label>
+
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+              ></textarea>
+            </div>
+
+
+            <button
+              class="send-button"
+              type="button"
+            >
+              Send
+            </button>
+
+          </form>
+
         </div>
 
-        <div class="contact-item">
-          <div class="label">Instagram</div>
-
-          <a
-            href="https://www.instagram.com/juho_2d/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @juho_2d
-          </a>
-        </div>
       </section>
 
+
+      <!-- LEGAL -->
+
       <div class="legal-links">
-        <a href="/impressum">Impressum</a>
-        <a href="/privacy">Privacy Policy</a>
+        <a href="/impressum">
+          Impressum
+        </a>
+
+        <a href="/privacy">
+          Privacy Policy
+        </a>
       </div>
+
     </main>
   </body>
 </html>
 
+
 <style>
+
   :global(*) {
     box-sizing: border-box;
   }
+
 
   :global(html),
   :global(body) {
@@ -88,53 +171,84 @@ import Header from "../components/Header.astro";
     margin: 0;
   }
 
+
   :global(body) {
     background: #fff;
     color: #111;
+
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
     line-height: 1.35;
   }
+
 
   a {
     color: inherit;
     text-decoration: none;
   }
 
+
+
+  /* PAGE */
+
   .contact-page {
     position: relative;
+
     width: 100%;
+
     min-height: 100vh;
     min-height: 100dvh;
+
     background: #fff;
   }
 
+
   .contact-content {
+    position: relative;
+
+    min-height: 100vh;
+
     padding-top: 230px;
     padding-right: 32px;
-    padding-bottom: 120px;
+    padding-bottom: 150px;
     padding-left: 32px;
   }
+
+
+
+  /* LEFT CONTACT */
+
+  .contact-left {
+    width: 220px;
+  }
+
 
   .contact-animation {
     margin-bottom: 48px;
   }
 
+
   .contact-animation video {
     display: block;
+
     width: 180px;
     height: auto;
   }
+
 
   .contact-item {
     margin-bottom: 34px;
   }
 
+
   .label {
     margin-bottom: 5px;
+
     color: #777;
+
     font-size: 12px;
   }
+
 
   .contact-content a {
     font-size: 15px;
@@ -142,19 +256,154 @@ import Header from "../components/Header.astro";
     line-height: 1.35;
   }
 
+
   .contact-content a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
+
+
+  /* SEND A MESSAGE BOX */
+
+  .inquiry {
+    position: absolute;
+
+    top: 80px;
+    left: 30vw;
+
+    width: 520px;
+    max-width: calc(100vw - 30vw - 64px);
+
+    padding: 30px;
+
+    border: 1px solid #777;
+    border-radius: 0;
+
+    background: #fff;
+  }
+
+
+  .inquiry-title {
+    margin-bottom: 36px;
+
+    color: #111;
+
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+
+
+  /* FORM */
+
+  .inquiry-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+  }
+
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .form-field label {
+    margin-bottom: 8px;
+
+    color: #777;
+
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+
+  .form-field input,
+  .form-field textarea {
+    display: block;
+
+    width: 100%;
+
+    padding: 4px 0 8px;
+
+    border: 0;
+    border-bottom: 1px solid #bbb;
+    border-radius: 0;
+
+    outline: none;
+
+    background: transparent;
+    color: #111;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.35;
+
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+
+  .form-field textarea {
+    min-height: 110px;
+
+    resize: none;
+  }
+
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-bottom-color: #111;
+  }
+
+
+
+  /* SEND BUTTON */
+
+  .send-button {
+    align-self: flex-start;
+
+    margin-top: 2px;
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+    color: #111;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    cursor: pointer;
+  }
+
+
+  .send-button:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+
+
+  /* LEGAL */
+
   .legal-links {
     position: fixed;
+
     right: 32px;
     bottom: 28px;
+
     z-index: 100;
 
     display: flex;
     align-items: center;
+
     gap: 20px;
 
     padding: 5px 7px;
@@ -167,45 +416,132 @@ import Header from "../components/Header.astro";
     line-height: 1.2;
   }
 
+
   .legal-links a {
     display: block;
   }
+
 
   .legal-links a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
+
+
+  /* TABLET */
+
+  @media (max-width: 1050px) {
+
+    .inquiry {
+      left: 34vw;
+
+      width: 460px;
+      max-width: calc(100vw - 34vw - 40px);
+    }
+
+  }
+
+
+
+  /* MOBILE */
+
   @media (max-width: 760px) {
+
     .contact-content {
+      min-height: auto;
+
       padding-top: 130px;
       padding-right: 18px;
-      padding-bottom: 100px;
+      padding-bottom: 110px;
       padding-left: 18px;
     }
+
+
+    .contact-left {
+      width: 100%;
+    }
+
 
     .contact-animation {
       margin-bottom: 36px;
     }
 
+
     .contact-animation video {
       width: 150px;
     }
+
 
     .contact-item {
       margin-bottom: 28px;
     }
 
+
     .contact-content a {
       font-size: 14px;
     }
 
+
+
+    /* MESSAGE BOX */
+
+    .inquiry {
+      position: static;
+
+      width: 100%;
+      max-width: none;
+
+      margin-top: 58px;
+
+      padding: 24px 20px 26px;
+
+      border: 1px solid #777;
+    }
+
+
+    .inquiry-title {
+      margin-bottom: 32px;
+
+      font-size: 14px;
+    }
+
+
+    .inquiry-form {
+      gap: 26px;
+    }
+
+
+    .form-field input,
+    .form-field textarea {
+      font-size: 14px;
+    }
+
+
+    .form-field textarea {
+      min-height: 100px;
+    }
+
+
+    .send-button {
+      font-size: 14px;
+    }
+
+
+
+    /* LEGAL */
+
     .legal-links {
       right: 18px;
       bottom: 18px;
+
       gap: 14px;
+
       padding: 5px 7px;
+
       font-size: 11px;
     }
+
   }
+
 </style>
