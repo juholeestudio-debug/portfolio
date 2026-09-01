@@ -215,7 +215,6 @@ const turnstileSiteKey =
           <div
             id="success-view"
             class="success-view"
-            hidden
           >
 
             <video
@@ -303,7 +302,8 @@ const turnstileSiteKey =
         );
 
 
-      const startedAt = Date.now();
+      const startedAt =
+        Date.now();
 
 
       const getTurnstile = () => {
@@ -330,16 +330,19 @@ const turnstileSiteKey =
         }
 
 
-        successView.hidden = true;
+        successView.classList.remove(
+          "is-active"
+        );
+
 
         successMessage.classList.remove(
           "is-visible"
         );
 
 
-        inquiryTitle.hidden = false;
+        inquiryTitle.style.display = "";
 
-        form.hidden = false;
+        form.style.display = "";
 
 
         inquiry.style.height = "";
@@ -367,22 +370,30 @@ const turnstileSiteKey =
 
 
           /*
-            Keep the box at exactly the same
-            height while the form disappears.
+            Keep the outer message box
+            at the same height while
+            the success animation plays.
           */
 
           const currentHeight =
             inquiry.offsetHeight;
 
+
           inquiry.style.height =
             `${currentHeight}px`;
 
 
-          inquiryTitle.hidden = true;
+          inquiryTitle.style.display =
+            "none";
 
-          form.hidden = true;
 
-          successView.hidden = false;
+          form.style.display =
+            "none";
+
+
+          successView.classList.add(
+            "is-active"
+          );
 
 
           successMessage.classList.remove(
@@ -427,6 +438,7 @@ const turnstileSiteKey =
               error
             );
 
+
             showMessage();
           }
         };
@@ -459,15 +471,18 @@ const turnstileSiteKey =
                 formData.get("name") || ""
               ).trim();
 
+
             const email =
               String(
                 formData.get("email") || ""
               ).trim();
 
+
             const message =
               String(
                 formData.get("message") || ""
               ).trim();
+
 
             const website =
               String(
@@ -498,8 +513,10 @@ const turnstileSiteKey =
 
             sendButton.disabled = true;
 
+
             sendButton.textContent =
               "Sending…";
+
 
             formStatus.textContent = "";
 
@@ -542,11 +559,6 @@ const turnstileSiteKey =
               }
 
 
-              /*
-                The email has actually been sent
-                successfully at this point.
-              */
-
               form.reset();
 
 
@@ -577,6 +589,7 @@ const turnstileSiteKey =
 
               sendButton.disabled = false;
 
+
               sendButton.textContent =
                 "Send";
 
@@ -597,11 +610,6 @@ const turnstileSiteKey =
   }
 
 
-  :global([hidden]) {
-    display: none !important;
-  }
-
-
   :global(html),
   :global(body) {
     width: 100%;
@@ -614,7 +622,11 @@ const turnstileSiteKey =
     background: #fff;
     color: #111;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+
     font-size: 15px;
     line-height: 1.35;
   }
@@ -697,6 +709,7 @@ const turnstileSiteKey =
 
   .contact-content a:hover {
     text-decoration: underline;
+
     text-underline-offset: 4px;
   }
 
@@ -711,6 +724,7 @@ const turnstileSiteKey =
     left: 30vw;
 
     width: 520px;
+
     max-width: calc(
       100vw - 30vw - 64px
     );
@@ -718,6 +732,7 @@ const turnstileSiteKey =
     padding: 30px;
 
     border: 1px solid #777;
+
     border-radius: 0;
 
     background: #fff;
@@ -730,7 +745,9 @@ const turnstileSiteKey =
     color: #111;
 
     font-size: 15px;
+
     font-weight: 500;
+
     line-height: 1.35;
   }
 
@@ -740,6 +757,7 @@ const turnstileSiteKey =
 
   .inquiry-form {
     display: flex;
+
     flex-direction: column;
 
     gap: 30px;
@@ -748,6 +766,7 @@ const turnstileSiteKey =
 
   .form-field {
     display: flex;
+
     flex-direction: column;
   }
 
@@ -758,6 +777,7 @@ const turnstileSiteKey =
     color: #777;
 
     font-size: 12px;
+
     line-height: 1.35;
   }
 
@@ -771,19 +791,29 @@ const turnstileSiteKey =
     padding: 4px 0 8px;
 
     border: 0;
-    border-bottom: 1px solid #bbb;
+
+    border-bottom:
+      1px solid #bbb;
+
     border-radius: 0;
 
     outline: none;
 
     background: transparent;
+
     color: #111;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+
     font-size: 15px;
+
     line-height: 1.35;
 
     appearance: none;
+
     -webkit-appearance: none;
   }
 
@@ -825,6 +855,7 @@ const turnstileSiteKey =
 
   .turnstile-wrapper {
     width: 100%;
+
     min-height: 65px;
   }
 
@@ -834,6 +865,7 @@ const turnstileSiteKey =
 
   .form-footer {
     display: flex;
+
     align-items: center;
 
     gap: 18px;
@@ -847,11 +879,13 @@ const turnstileSiteKey =
     flex: 0 0 auto;
 
     margin: 0;
+
     padding: 0;
 
     border: 0;
 
     background: transparent;
+
     color: #111;
 
     font-family:
@@ -860,7 +894,9 @@ const turnstileSiteKey =
       sans-serif;
 
     font-size: 15px;
+
     font-weight: 400;
+
     line-height: 1.35;
 
     cursor: pointer;
@@ -869,6 +905,7 @@ const turnstileSiteKey =
 
   .send-button:hover {
     text-decoration: underline;
+
     text-underline-offset: 4px;
   }
 
@@ -891,6 +928,7 @@ const turnstileSiteKey =
     color: #777;
 
     font-size: 12px;
+
     line-height: 1.35;
   }
 
@@ -901,22 +939,34 @@ const turnstileSiteKey =
   .success-view {
     position: absolute;
 
-    inset: 30px;
+    inset: 8px;
 
-    display: flex;
+    display: none;
+
     flex-direction: column;
+
     align-items: center;
+
     justify-content: center;
 
     text-align: center;
+
+    overflow: hidden;
+  }
+
+
+  .success-view.is-active {
+    display: flex;
   }
 
 
   .success-video {
     display: block;
 
-    width: 250px;
-    max-width: 70%;
+    width: 100%;
+    height: auto;
+
+    max-width: none;
 
     aspect-ratio: 1 / 1;
 
@@ -927,17 +977,25 @@ const turnstileSiteKey =
 
 
   .success-message {
-    margin-top: 20px;
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 18px;
 
     color: #111;
 
     font-size: 13px;
+
     font-weight: 400;
+
     line-height: 1.35;
 
     opacity: 0;
 
-    transform: translateY(3px);
+    transform:
+      translateY(3px);
 
     transition:
       opacity 180ms ease,
@@ -948,7 +1006,8 @@ const turnstileSiteKey =
   .success-message.is-visible {
     opacity: 1;
 
-    transform: translateY(0);
+    transform:
+      translateY(0);
   }
 
 
@@ -959,11 +1018,13 @@ const turnstileSiteKey =
     position: fixed;
 
     right: 32px;
+
     bottom: 28px;
 
     z-index: 100;
 
     display: flex;
+
     align-items: center;
 
     gap: 20px;
@@ -971,10 +1032,13 @@ const turnstileSiteKey =
     padding: 5px 7px;
 
     background: #fff;
+
     color: #111;
 
     font-size: 12px;
+
     font-weight: 400;
+
     line-height: 1.2;
   }
 
@@ -986,6 +1050,7 @@ const turnstileSiteKey =
 
   .legal-links a:hover {
     text-decoration: underline;
+
     text-underline-offset: 4px;
   }
 
@@ -1017,8 +1082,11 @@ const turnstileSiteKey =
       min-height: auto;
 
       padding-top: 130px;
+
       padding-right: 18px;
+
       padding-bottom: 110px;
+
       padding-left: 18px;
     }
 
@@ -1055,9 +1123,11 @@ const turnstileSiteKey =
       position: relative;
 
       top: auto;
+
       left: auto;
 
       width: 100%;
+
       max-width: none;
 
       margin-top: 58px;
@@ -1098,6 +1168,7 @@ const turnstileSiteKey =
 
     .form-footer {
       align-items: flex-start;
+
       flex-direction: column;
 
       gap: 8px;
@@ -1108,22 +1179,25 @@ const turnstileSiteKey =
     /* SUCCESS */
 
     .success-view {
-      inset: 20px;
+      inset: 6px;
     }
 
 
     .success-video {
-      width: min(
-        220px,
-        70vw
-      );
+      width: 100%;
 
       max-width: 100%;
+
+      height: auto;
+
+      aspect-ratio: 1 / 1;
+
+      object-fit: contain;
     }
 
 
     .success-message {
-      margin-top: 16px;
+      bottom: 14px;
 
       font-size: 12px;
     }
@@ -1134,6 +1208,7 @@ const turnstileSiteKey =
 
     .legal-links {
       right: 18px;
+
       bottom: 18px;
 
       gap: 14px;
