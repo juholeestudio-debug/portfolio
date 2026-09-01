@@ -89,7 +89,7 @@ const turnstileSiteKey =
         </div>
 
 
-        <!-- SEND A MESSAGE -->
+        <!-- MESSAGE FORM -->
 
         <div
           id="inquiry"
@@ -100,7 +100,7 @@ const turnstileSiteKey =
             id="inquiry-title"
             class="inquiry-title"
           >
-            Send a message
+            To Juho
           </div>
 
 
@@ -188,6 +188,8 @@ const turnstileSiteKey =
             </div>
 
 
+            <!-- SEND -->
+
             <div class="form-footer">
 
               <button
@@ -248,6 +250,7 @@ const turnstileSiteKey =
       <!-- LEGAL -->
 
       <div class="legal-links">
+
         <a href="/impressum">
           Impressum
         </a>
@@ -255,6 +258,7 @@ const turnstileSiteKey =
         <a href="/privacy">
           Privacy Policy
         </a>
+
       </div>
 
     </main>
@@ -344,7 +348,6 @@ const turnstileSiteKey =
 
         form.style.display = "";
 
-
         inquiry.style.height = "";
 
 
@@ -368,12 +371,6 @@ const turnstileSiteKey =
             return;
           }
 
-
-          /*
-            Keep the outer message box
-            at the same height while
-            the success animation plays.
-          */
 
           const currentHeight =
             inquiry.offsetHeight;
@@ -513,10 +510,8 @@ const turnstileSiteKey =
 
             sendButton.disabled = true;
 
-
             sendButton.textContent =
               "Sending…";
-
 
             formStatus.textContent = "";
 
@@ -588,7 +583,6 @@ const turnstileSiteKey =
             } finally {
 
               sendButton.disabled = false;
-
 
               sendButton.textContent =
                 "Send";
@@ -715,7 +709,7 @@ const turnstileSiteKey =
 
 
 
-  /* SEND A MESSAGE BOX */
+  /* MESSAGE BOX */
 
   .inquiry {
     position: absolute;
@@ -732,7 +726,6 @@ const turnstileSiteKey =
     padding: 30px;
 
     border: 1px solid #777;
-
     border-radius: 0;
 
     background: #fff;
@@ -745,9 +738,7 @@ const turnstileSiteKey =
     color: #111;
 
     font-size: 15px;
-
     font-weight: 500;
-
     line-height: 1.35;
   }
 
@@ -777,7 +768,6 @@ const turnstileSiteKey =
     color: #777;
 
     font-size: 12px;
-
     line-height: 1.35;
   }
 
@@ -809,11 +799,9 @@ const turnstileSiteKey =
       sans-serif;
 
     font-size: 15px;
-
     line-height: 1.35;
 
     appearance: none;
-
     -webkit-appearance: none;
   }
 
@@ -876,16 +864,24 @@ const turnstileSiteKey =
   /* SEND BUTTON */
 
   .send-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
     flex: 0 0 auto;
+
+    min-width: 88px;
+    height: 38px;
 
     margin: 0;
 
-    padding: 0;
+    padding: 0 20px;
 
-    border: 0;
+    border: 1px solid #111;
+    border-radius: 0;
 
-    background: transparent;
-
+    background: #fff;
     color: #111;
 
     font-family:
@@ -893,25 +889,32 @@ const turnstileSiteKey =
       Helvetica,
       sans-serif;
 
-    font-size: 15px;
-
+    font-size: 14px;
     font-weight: 400;
-
-    line-height: 1.35;
+    line-height: 1;
 
     cursor: pointer;
+
+    transition:
+      background 140ms ease,
+      color 140ms ease,
+      border-color 140ms ease;
   }
 
 
   .send-button:hover {
-    text-decoration: underline;
+    background: #111;
+    color: #fff;
 
-    text-underline-offset: 4px;
+    text-decoration: none;
   }
 
 
   .send-button:disabled {
-    color: #777;
+    border-color: #bbb;
+
+    background: #fff;
+    color: #999;
 
     cursor: default;
 
@@ -928,7 +931,6 @@ const turnstileSiteKey =
     color: #777;
 
     font-size: 12px;
-
     line-height: 1.35;
   }
 
@@ -946,7 +948,6 @@ const turnstileSiteKey =
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
@@ -987,9 +988,7 @@ const turnstileSiteKey =
     color: #111;
 
     font-size: 13px;
-
     font-weight: 400;
-
     line-height: 1.35;
 
     opacity: 0;
@@ -1018,7 +1017,6 @@ const turnstileSiteKey =
     position: fixed;
 
     right: 32px;
-
     bottom: 28px;
 
     z-index: 100;
@@ -1032,13 +1030,10 @@ const turnstileSiteKey =
     padding: 5px 7px;
 
     background: #fff;
-
     color: #111;
 
     font-size: 12px;
-
     font-weight: 400;
-
     line-height: 1.2;
   }
 
@@ -1082,11 +1077,8 @@ const turnstileSiteKey =
       min-height: auto;
 
       padding-top: 130px;
-
       padding-right: 18px;
-
       padding-bottom: 110px;
-
       padding-left: 18px;
     }
 
@@ -1123,11 +1115,9 @@ const turnstileSiteKey =
       position: relative;
 
       top: auto;
-
       left: auto;
 
       width: 100%;
-
       max-width: none;
 
       margin-top: 58px;
@@ -1161,7 +1151,15 @@ const turnstileSiteKey =
     }
 
 
+
+    /* BUTTON */
+
     .send-button {
+      min-width: 72px;
+      height: 32px;
+
+      padding: 0 14px;
+
       font-size: 14px;
     }
 
@@ -1171,7 +1169,7 @@ const turnstileSiteKey =
 
       flex-direction: column;
 
-      gap: 8px;
+      gap: 10px;
     }
 
 
@@ -1185,9 +1183,7 @@ const turnstileSiteKey =
 
     .success-video {
       width: 100%;
-
       max-width: 100%;
-
       height: auto;
 
       aspect-ratio: 1 / 1;
@@ -1208,7 +1204,6 @@ const turnstileSiteKey =
 
     .legal-links {
       right: 18px;
-
       bottom: 18px;
 
       gap: 14px;
