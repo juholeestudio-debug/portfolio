@@ -1,5 +1,8 @@
 ---
 import Header from "../components/Header.astro";
+
+const turnstileSiteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <!doctype html>
@@ -25,6 +28,13 @@ import Header from "../components/Header.astro";
       sizes="32x32"
       href="/favicon.png"
     />
+
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
   </head>
 
   <body>
@@ -53,7 +63,9 @@ import Header from "../components/Header.astro";
           </div>
 
           <div class="contact-item">
-            <div class="label">Email</div>
+            <div class="label">
+              Email
+            </div>
 
             <a href="mailto:juholee.studio@gmail.com">
               juholee.studio@gmail.com
@@ -61,7 +73,9 @@ import Header from "../components/Header.astro";
           </div>
 
           <div class="contact-item">
-            <div class="label">Instagram</div>
+            <div class="label">
+              Instagram
+            </div>
 
             <a
               href="https://www.instagram.com/juho_2d/"
@@ -83,7 +97,10 @@ import Header from "../components/Header.astro";
             Send a message
           </div>
 
-          <form class="inquiry-form">
+          <form
+            id="contact-form"
+            class="inquiry-form"
+          >
 
             <div class="form-field">
               <label for="name">
@@ -95,6 +112,8 @@ import Header from "../components/Header.astro";
                 name="name"
                 type="text"
                 autocomplete="name"
+                maxlength="100"
+                required
               />
             </div>
 
@@ -109,6 +128,8 @@ import Header from "../components/Header.astro";
                 name="email"
                 type="email"
                 autocomplete="email"
+                maxlength="200"
+                required
               />
             </div>
 
@@ -122,16 +143,64 @@ import Header from "../components/Header.astro";
                 id="message"
                 name="message"
                 rows="5"
+                maxlength="3000"
+                required
               ></textarea>
             </div>
 
 
-            <button
-              class="send-button"
-              type="button"
+            <!-- HONEYPOT -->
+
+            <div
+              class="hp-field"
+              aria-hidden="true"
             >
-              Send
-            </button>
+              <label for="website">
+                Website
+              </label>
+
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+
+            <!-- TURNSTILE -->
+
+            <div
+              class="turnstile-wrapper"
+            >
+              <div
+                class="cf-turnstile"
+                data-sitekey={turnstileSiteKey}
+                data-theme="light"
+                data-size="flexible"
+              ></div>
+            </div>
+
+
+            <div class="form-footer">
+
+              <button
+                id="send-button"
+                class="send-button"
+                type="submit"
+              >
+                Send
+              </button>
+
+              <div
+                id="form-status"
+                class="form-status"
+                role="status"
+                aria-live="polite"
+              ></div>
+
+            </div>
 
           </form>
 
@@ -153,6 +222,173 @@ import Header from "../components/Header.astro";
       </div>
 
     </main>
+
+
+    <script>
+      const form =
+        document.querySelector<HTMLFormElement>(
+          "#contact-form"
+        );
+
+      const sendButton =
+        document.querySelector<HTMLButtonElement>(
+          "#send-button"
+        );
+
+      const formStatus =
+        document.querySelector<HTMLDivElement>(
+          "#form-status"
+        );
+
+      const startedAt = Date.now();
+
+
+      if (
+        form &&
+        sendButton &&
+        formStatus
+      ) {
+        form.addEventListener(
+          "submit",
+          async (event) => {
+            event.preventDefault();
+
+
+            if (!form.reportValidity()) {
+              return;
+            }
+
+
+            const formData =
+              new FormData(form);
+
+
+            const name =
+              String(
+                formData.get("name") || ""
+              ).trim();
+
+            const email =
+              String(
+                formData.get("email") || ""
+              ).trim();
+
+            const message =
+              String(
+                formData.get("message") || ""
+              ).trim();
+
+            const website =
+              String(
+                formData.get("website") || ""
+              ).trim();
+
+
+            const turnstileInput =
+              document.querySelector<
+                HTMLInputElement
+              >(
+                '[name="cf-turnstile-response"]'
+              );
+
+            const turnstileToken =
+              turnstileInput?.value || "";
+
+
+            if (!turnstileToken) {
+              formStatus.textContent =
+                "Please complete verification.";
+
+              return;
+            }
+
+
+            sendButton.disabled = true;
+
+            sendButton.textContent =
+              "Sending…";
+
+            formStatus.textContent = "";
+
+
+            try {
+              const response =
+                await fetch(
+                  "/api/contact",
+                  {
+                    method: "POST",
+
+                    headers: {
+                      "Content-Type":
+                        "application/json",
+                    },
+
+                    body: JSON.stringify({
+                      name,
+                      email,
+                      message,
+                      website,
+                      startedAt,
+                      turnstileToken,
+                    }),
+                  }
+                );
+
+
+              const result =
+                await response.json();
+
+
+              if (!response.ok) {
+                throw new Error(
+                  result.error ||
+                  "Message could not be sent."
+                );
+              }
+
+
+              form.reset();
+
+              formStatus.textContent =
+                "Message sent.";
+
+
+              const turnstile =
+                (
+                  window as Window & {
+                    turnstile?: {
+                      reset: () => void;
+                    };
+                  }
+                ).turnstile;
+
+
+              if (turnstile) {
+                turnstile.reset();
+              }
+
+            } catch (error) {
+
+              console.error(error);
+
+              formStatus.textContent =
+                error instanceof Error
+                  ? error.message
+                  : "Message could not be sent.";
+
+            } finally {
+
+              sendButton.disabled = false;
+
+              sendButton.textContent =
+                "Send";
+
+            }
+          }
+        );
+      }
+    </script>
+
   </body>
 </html>
 
@@ -362,12 +598,51 @@ import Header from "../components/Header.astro";
 
 
 
+  /* HONEYPOT */
+
+  .hp-field {
+    position: absolute !important;
+
+    left: -9999px !important;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    pointer-events: none;
+  }
+
+
+
+  /* TURNSTILE */
+
+  .turnstile-wrapper {
+    width: 100%;
+    min-height: 65px;
+  }
+
+
+
+  /* FORM FOOTER */
+
+  .form-footer {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+  }
+
+
+
   /* SEND BUTTON */
 
   .send-button {
-    align-self: flex-start;
+    flex: 0 0 auto;
 
-    margin-top: 2px;
+    margin: 0;
     padding: 0;
 
     border: 0;
@@ -387,6 +662,28 @@ import Header from "../components/Header.astro";
   .send-button:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
+  }
+
+
+  .send-button:disabled {
+    color: #777;
+
+    cursor: default;
+
+    text-decoration: none;
+  }
+
+
+
+  /* STATUS */
+
+  .form-status {
+    min-height: 20px;
+
+    color: #777;
+
+    font-size: 12px;
+    line-height: 1.35;
   }
 
 
@@ -437,7 +734,9 @@ import Header from "../components/Header.astro";
       left: 34vw;
 
       width: 460px;
-      max-width: calc(100vw - 34vw - 40px);
+      max-width: calc(
+        100vw - 34vw - 40px
+      );
     }
 
   }
@@ -525,6 +824,14 @@ import Header from "../components/Header.astro";
 
     .send-button {
       font-size: 14px;
+    }
+
+
+    .form-footer {
+      align-items: flex-start;
+      flex-direction: column;
+
+      gap: 8px;
     }
 
 
