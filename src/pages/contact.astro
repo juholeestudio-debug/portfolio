@@ -91,11 +91,18 @@ const turnstileSiteKey =
 
         <!-- SEND A MESSAGE -->
 
-        <div class="inquiry">
+        <div
+          id="inquiry"
+          class="inquiry"
+        >
 
-          <div class="inquiry-title">
+          <div
+            id="inquiry-title"
+            class="inquiry-title"
+          >
             Send a message
           </div>
+
 
           <form
             id="contact-form"
@@ -171,9 +178,7 @@ const turnstileSiteKey =
 
             <!-- TURNSTILE -->
 
-            <div
-              class="turnstile-wrapper"
-            >
+            <div class="turnstile-wrapper">
               <div
                 class="cf-turnstile"
                 data-sitekey={turnstileSiteKey}
@@ -204,6 +209,38 @@ const turnstileSiteKey =
 
           </form>
 
+
+          <!-- SUCCESS ANIMATION -->
+
+          <div
+            id="success-view"
+            class="success-view"
+            hidden
+          >
+
+            <video
+              id="success-video"
+              class="success-video"
+              muted
+              playsinline
+              preload="auto"
+            >
+              <source
+                src="/video/message-sent.mp4"
+                type="video/mp4"
+              />
+            </video>
+
+            <div
+              id="success-message"
+              class="success-message"
+              aria-live="polite"
+            >
+              Message sent.
+            </div>
+
+          </div>
+
         </div>
 
       </section>
@@ -230,6 +267,16 @@ const turnstileSiteKey =
           "#contact-form"
         );
 
+      const inquiry =
+        document.querySelector<HTMLDivElement>(
+          "#inquiry"
+        );
+
+      const inquiryTitle =
+        document.querySelector<HTMLDivElement>(
+          "#inquiry-title"
+        );
+
       const sendButton =
         document.querySelector<HTMLButtonElement>(
           "#send-button"
@@ -240,7 +287,149 @@ const turnstileSiteKey =
           "#form-status"
         );
 
+      const successView =
+        document.querySelector<HTMLDivElement>(
+          "#success-view"
+        );
+
+      const successVideo =
+        document.querySelector<HTMLVideoElement>(
+          "#success-video"
+        );
+
+      const successMessage =
+        document.querySelector<HTMLDivElement>(
+          "#success-message"
+        );
+
+
       const startedAt = Date.now();
+
+
+      const getTurnstile = () => {
+        return (
+          window as Window & {
+            turnstile?: {
+              reset: () => void;
+            };
+          }
+        ).turnstile;
+      };
+
+
+      const restoreForm = () => {
+
+        if (
+          !form ||
+          !inquiry ||
+          !inquiryTitle ||
+          !successView ||
+          !successMessage
+        ) {
+          return;
+        }
+
+
+        successView.hidden = true;
+
+        successMessage.classList.remove(
+          "is-visible"
+        );
+
+
+        inquiryTitle.hidden = false;
+
+        form.hidden = false;
+
+
+        inquiry.style.height = "";
+
+
+        if (formStatus) {
+          formStatus.textContent = "";
+        }
+      };
+
+
+      const playSuccessAnimation =
+        async () => {
+
+          if (
+            !form ||
+            !inquiry ||
+            !inquiryTitle ||
+            !successView ||
+            !successVideo ||
+            !successMessage
+          ) {
+            return;
+          }
+
+
+          /*
+            Keep the box at exactly the same
+            height while the form disappears.
+          */
+
+          const currentHeight =
+            inquiry.offsetHeight;
+
+          inquiry.style.height =
+            `${currentHeight}px`;
+
+
+          inquiryTitle.hidden = true;
+
+          form.hidden = true;
+
+          successView.hidden = false;
+
+
+          successMessage.classList.remove(
+            "is-visible"
+          );
+
+
+          successVideo.pause();
+
+          successVideo.currentTime = 0;
+
+
+          const showMessage = () => {
+
+            successMessage.classList.add(
+              "is-visible"
+            );
+
+
+            window.setTimeout(
+              () => {
+                restoreForm();
+              },
+              1800
+            );
+          };
+
+
+          successVideo.onended = () => {
+            showMessage();
+          };
+
+
+          try {
+
+            await successVideo.play();
+
+          } catch (error) {
+
+            console.error(
+              "Success animation could not play:",
+              error
+            );
+
+            showMessage();
+          }
+        };
 
 
       if (
@@ -248,9 +437,11 @@ const turnstileSiteKey =
         sendButton &&
         formStatus
       ) {
+
         form.addEventListener(
           "submit",
           async (event) => {
+
             event.preventDefault();
 
 
@@ -291,11 +482,13 @@ const turnstileSiteKey =
                 '[name="cf-turnstile-response"]'
               );
 
+
             const turnstileToken =
               turnstileInput?.value || "";
 
 
             if (!turnstileToken) {
+
               formStatus.textContent =
                 "Please complete verification.";
 
@@ -312,6 +505,7 @@ const turnstileSiteKey =
 
 
             try {
+
               const response =
                 await fetch(
                   "/api/contact",
@@ -340,6 +534,7 @@ const turnstileSiteKey =
 
 
               if (!response.ok) {
+
                 throw new Error(
                   result.error ||
                   "Message could not be sent."
@@ -347,34 +542,36 @@ const turnstileSiteKey =
               }
 
 
-              form.reset();
+              /*
+                The email has actually been sent
+                successfully at this point.
+              */
 
-              formStatus.textContent =
-                "Message sent.";
+              form.reset();
 
 
               const turnstile =
-                (
-                  window as Window & {
-                    turnstile?: {
-                      reset: () => void;
-                    };
-                  }
-                ).turnstile;
+                getTurnstile();
 
 
               if (turnstile) {
                 turnstile.reset();
               }
 
+
+              await playSuccessAnimation();
+
+
             } catch (error) {
 
               console.error(error);
+
 
               formStatus.textContent =
                 error instanceof Error
                   ? error.message
                   : "Message could not be sent.";
+
 
             } finally {
 
@@ -397,6 +594,11 @@ const turnstileSiteKey =
 
   :global(*) {
     box-sizing: border-box;
+  }
+
+
+  :global([hidden]) {
+    display: none !important;
   }
 
 
@@ -509,7 +711,9 @@ const turnstileSiteKey =
     left: 30vw;
 
     width: 520px;
-    max-width: calc(100vw - 30vw - 64px);
+    max-width: calc(
+      100vw - 30vw - 64px
+    );
 
     padding: 30px;
 
@@ -650,7 +854,11 @@ const turnstileSiteKey =
     background: transparent;
     color: #111;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+
     font-size: 15px;
     font-weight: 400;
     line-height: 1.35;
@@ -684,6 +892,63 @@ const turnstileSiteKey =
 
     font-size: 12px;
     line-height: 1.35;
+  }
+
+
+
+  /* SUCCESS ANIMATION */
+
+  .success-view {
+    position: absolute;
+
+    inset: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+  }
+
+
+  .success-video {
+    display: block;
+
+    width: 250px;
+    max-width: 70%;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: contain;
+
+    background: transparent;
+  }
+
+
+  .success-message {
+    margin-top: 20px;
+
+    color: #111;
+
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    opacity: 0;
+
+    transform: translateY(3px);
+
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+
+  .success-message.is-visible {
+    opacity: 1;
+
+    transform: translateY(0);
   }
 
 
@@ -734,6 +999,7 @@ const turnstileSiteKey =
       left: 34vw;
 
       width: 460px;
+
       max-width: calc(
         100vw - 34vw - 40px
       );
@@ -786,7 +1052,10 @@ const turnstileSiteKey =
     /* MESSAGE BOX */
 
     .inquiry {
-      position: static;
+      position: relative;
+
+      top: auto;
+      left: auto;
 
       width: 100%;
       max-width: none;
@@ -832,6 +1101,31 @@ const turnstileSiteKey =
       flex-direction: column;
 
       gap: 8px;
+    }
+
+
+
+    /* SUCCESS */
+
+    .success-view {
+      inset: 20px;
+    }
+
+
+    .success-video {
+      width: min(
+        220px,
+        70vw
+      );
+
+      max-width: 100%;
+    }
+
+
+    .success-message {
+      margin-top: 16px;
+
+      font-size: 12px;
     }
 
 
